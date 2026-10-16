@@ -1,0 +1,26 @@
+# PostgreSQL para DESENVOLVIMENTO LOCAL.
+# As credenciais abaixo servem apenas para a sua máquina. Em produção (Hetzner)
+# usamos outro compose, com segredos gerados aleatoriamente (Task 11.2).
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: fittools-db-dev
+    environment:
+      POSTGRES_USER: fittools
+      POSTGRES_PASSWORD: fittools_dev
+      POSTGRES_DB: fittools
+      TZ: UTC
+      PGTZ: UTC
+    ports:
+      # Publicada somente em localhost: nada fora da sua máquina acessa o banco
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - pgdata_dev:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fittools -d fittools"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  pgdata_dev:

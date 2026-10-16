@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Calculadora de Percentual de Gordura — Método Marinha dos EUA | FitTools</title>
+<meta name="description" content="Estime seu percentual de gordura corporal (%BF) e sua quantidade de massa magra utilizando apenas fita métrica e a fórmula oficial da Marinha Norte-Americana (US Navy).">
+<link rel="canonical" href="https://fittoolsbrasil.com.br/calculadora-de-gordura-corporal">
+<meta property="og:title" content="Calculadora de Gordura Corporal (US Navy) — FitTools">
+<meta property="og:description" content="Estime sua composição corporal com alta precisão sem precisar de bioimpedância ou adipômetro.">
+<meta name="theme-color" content="#0B0F19">
+<link rel="stylesheet" href="../assets/css/styles.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Calculadora de Gordura US Navy FitTools",
+"applicationCategory":"HealthApplication","operatingSystem":"Web","inLanguage":"pt-BR",
+"url":"https://fittoolsbrasil.com.br/calculadora-de-gordura-corporal",
+"offers":{"@type":"Offer","price":"0","priceCurrency":"BRL"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"Como funciona o método da Marinha dos EUA para gordura corporal?","acceptedAnswer":{"@type":"Answer","text":"O método utiliza equações logarítmicas baseadas nas circunferências do pescoço, abdômen e altura (mais quadril para mulheres) para estimar a densidade corporal e calcular a porcentagem de tecido adiposo."}},
+{"@type":"Question","name":"O método da fita métrica é confiável?","acceptedAnswer":{"@type":"Answer","text":"Estudos de validação mostram correlação de r = 0,85 a 0,90 com exames de DEXA e pesagem hidrostática, apresentando erro padrão de estimativa em torno de 3% a 4% quando as medidas são tomadas corretamente."}},
+{"@type":"Question","name":"Qual o percentual de gordura ideal para homens e mulheres?","acceptedAnswer":{"@type":"Answer","text":"Para homens, a faixa atlética e saudável fica entre 10% e 18%. Para mulheres, devido a fatores hormonais e reprodutivos essenciais, a faixa saudável situa-se entre 18% e 25%."}}]}
+</script>
+</head>
+<body>
+<div id="site-header"></div>
+
+<div class="wrap page-head">
+  <div class="crumbs"><a href="/">Início</a> › Calculadora de gordura corporal</div>
+  <h1>Calculadora de Gordura Corporal</h1>
+  <p>Estime seu percentual de tecido adiposo (%BF), massa gorda e massa livre de gordura por meio do protocolo antropométrico da Marinha dos Estados Unidos (Hodgdon & Beckett).</p>
+</div>
+
+<div class="wrap" style="padding-bottom:8px">
+  <div id="calc-root" data-calc="gordura"></div>
+</div>
+
+<div class="wrap section">
+<article class="prose">
+  <h2>Instruções para medição precisa com a fita métrica</h2>
+  <p>Para obter um resultado consistente, utilize uma fita métrica maleável e meça pela manhã, em jejum, mantendo a fita firme sobre a pele sem comprimir o tecido subcutâneo:</p>
+  <ul>
+    <li><b>Altura:</b> Descalço, com postura ereta e calcanhares encostados na parede.</li>
+    <li><b>Pescoço:</b> Logo abaixo do pomo de adão (laringe), com a fita levemente inclinada para baixo na parte frontal.</li>
+    <li><b>Cintura (Homens):</b> Na linha horizontal do umbigo, no final de uma expiração normal (sem recolher o abdômen).</li>
+    <li><b>Cintura (Mulheres):</b> No ponto de menor circunferência abdominal, geralmente cerca de 2 a 3 cm acima do umbigo.</li>
+    <li><b>Quadril (Mulheres):</b> Na maior protuberância dos glúteos com os pés juntos.</li>
+  </ul>
+
+  <h2>Fórmulas matemáticas do protocolo US Navy</h2>
+  <div class="formula">Homens:
+%Gordura = 495 ÷ [1.0324 − 0.19077 × log10(Cintura − Pescoço) + 0.15456 × log10(Altura)] − 450
+
+Mulheres:
+%Gordura = 495 ÷ [1.29579 − 0.35004 × log10(Cintura + Quadril − Pescoço) + 0.22100 × log10(Altura)] − 450</div>
+
+  <h2>Tabela de Referência de Gordura Corporal</h2>
+  <p>Diferente do IMC, o percentual de gordura reflete diretamente a qualidade da composição física:</p>
+  <ul>
+    <li><b>Essencial / Mínimo biológico:</b> Homens: 2% a 5% | Mulheres: 10% a 13%</li>
+    <li><b>Atletas:</b> Homens: 6% a 13% | Mulheres: 14% a 20%</li>
+    <li><b>Boa forma / Fitness:</b> Homens: 14% a 17% | Mulheres: 21% a 24%</li>
+    <li><b>Média populacional:</b> Homens: 18% a 24% | Mulheres: 25% a 31%</li>
+    <li><b>Acima do recomendado:</b> Homens: 25%+ | Mulheres: 32%+</li>
+  </ul>
+
+  <h2>Referência Científica</h2>
+  <div class="ref" id="ref-navy"></div>
+</article>
+</div>
+
+<div id="site-footer"></div>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/science.js"></script>
+<script src="../assets/js/calculators.js"></script>
+<script src="../assets/js/gamification.js"></script>
+<script src="../assets/js/app.js"></script>
+<script>
+window.FitPageInit = function () {
+  document.getElementById('ref-navy').innerHTML = FitScience.refs.navy;
+};
+</script>
+</body>
+</html>

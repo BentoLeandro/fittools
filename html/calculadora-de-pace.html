@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Calculadora de Pace de Corrida e Previsão de Provas (Riegel) | FitTools</title>
+<meta name="description" content="Calcule seu ritmo médio de corrida (min/km), velocidade em km/h e projete seus tempos para 5k, 10k, meia maratona e maratona pela fórmula de Peter Riegel.">
+<link rel="canonical" href="https://fittoolsbrasil.com.br/calculadora-de-pace">
+<meta property="og:title" content="Calculadora de Pace de Corrida — FitTools">
+<meta property="og:description" content="Converta tempo e distância no seu pace exato e descubra suas projeções para provas de 5 km até 42 km.">
+<meta name="theme-color" content="#0B0F19">
+<link rel="stylesheet" href="../assets/css/styles.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Calculadora de Pace FitTools",
+"applicationCategory":"HealthApplication","operatingSystem":"Web","inLanguage":"pt-BR",
+"url":"https://fittoolsbrasil.com.br/calculadora-de-pace",
+"offers":{"@type":"Offer","price":"0","priceCurrency":"BRL"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"O que significa o termo 'pace' na corrida?","acceptedAnswer":{"@type":"Answer","text":"Pace é a métrica padrão do atletismo que indica o tempo necessário para percorrer exatamente um quilômetro (expresso em minutos e segundos por km, ex.: 5:30 min/km)."}},
+{"@type":"Question","name":"Como a fórmula de Riegel prevê o tempo de outras provas?","acceptedAnswer":{"@type":"Answer","text":"A fórmula matemática de Peter Riegel aplica um expoente de fadiga fisiológica (1,06) que projeta a perda progressiva de velocidade à medida que a distância da prova dobra."}},
+{"@type":"Question","name":"Como converter pace (min/km) para velocidade em km/h?","acceptedAnswer":{"@type":"Answer","text":"Divida 60 pelo valor decimal do pace. Por exemplo: um pace de 5:00 min/km equivale a 60 ÷ 5 = 12 km/h."}}]}
+</script>
+</head>
+<body>
+<div id="site-header"></div>
+
+<div class="wrap page-head">
+  <div class="crumbs"><a href="/">Início</a> › Calculadora de pace</div>
+  <h1>Calculadora de Pace de Corrida</h1>
+  <p>Calcule seu ritmo por quilômetro, velocidade média e faça projeções de tempo para provas de 5 km, 10 km, Meia Maratona e Maratona.</p>
+</div>
+
+<div class="wrap" style="padding-bottom:8px">
+  <div id="calc-root" data-calc="pace"></div>
+</div>
+
+<div class="wrap section">
+<article class="prose">
+  <h2>O Conceito de Pace e Estratégia de Ritmo</h2>
+  <p>No atletismo de rua e pista, a velocidade absoluta (km/h) é pouco intuitiva para o gerenciamento de prova. O <b>Pace</b> (minutos por quilômetro) permite ao corredor checar os tempos parciais a cada placa de quilometragem, garantindo que o plano de prova não seja arruinado por uma largada em ritmo excessivo.</p>
+
+  <h2>A Equação de Projeção de Peter Riegel</h2>
+  <p>Publicada no periódico <i>American Scientist</i>, a equação de Riegel é o padrão mundial para prever desempenhos esportivos em distâncias variadas a partir de um resultado recente conhecido:</p>
+  <div class="formula">Tempo Projetado (T2) = Tempo Base (T1) × (Distância 2 ÷ Distância 1)^1.06</div>
+
+  <h2>Tabela de Conversão Rápida</h2>
+  <ul>
+    <li><b>Pace 6:00 min/km:</b> 10,0 km/h | 5 km em 30 min | 10 km em 1h00</li>
+    <li><b>Pace 5:30 min/km:</b> 10,9 km/h | 5 km em 27 min 30s | 10 km em 55 min</li>
+    <li><b>Pace 5:00 min/km:</b> 12,0 km/h | 5 km em 25 min | 10 km em 50 min</li>
+    <li><b>Pace 4:30 min/km:</b> 13,3 km/h | 5 km em 22 min 30s | 10 km em 45 min</li>
+    <li><b>Pace 4:00 min/km:</b> 15,0 km/h | 5 km em 20 min | 10 km em 40 min</li>
+  </ul>
+
+  <h2>Referência Científica</h2>
+  <div class="ref" id="ref-riegel"></div>
+</article>
+</div>
+
+<div id="site-footer"></div>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/science.js"></script>
+<script src="../assets/js/calculators.js"></script>
+<script src="../assets/js/gamification.js"></script>
+<script src="../assets/js/app.js"></script>
+<script>
+window.FitPageInit = function () {
+  document.getElementById('ref-riegel').innerHTML = FitScience.refs.riegel;
+};
+</script>
+</body>
+</html>

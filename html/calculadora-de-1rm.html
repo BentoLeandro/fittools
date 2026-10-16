@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Calculadora de 1RM — Carga Máxima e Repetições (Brzycki & Epley) | FitTools</title>
+<meta name="description" content="Calcule sua repetição máxima (1RM) no supino, agachamento ou levantamento terra sem correr risco de lesão. Obtenha a tabela de percentuais para hipertrofia e força.">
+<link rel="canonical" href="https://fittoolsbrasil.com.br/calculadora-de-1rm">
+<meta property="og:title" content="Calculadora de 1RM e Cargas de Treino — FitTools">
+<meta property="og:description" content="Descubra sua força máxima teórica e todas as cargas de treinamento baseadas em percentuais de intensidade.">
+<meta name="theme-color" content="#0B0F19">
+<link rel="stylesheet" href="../assets/css/styles.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Calculadora de 1RM FitTools",
+"applicationCategory":"HealthApplication","operatingSystem":"Web","inLanguage":"pt-BR",
+"url":"https://fittoolsbrasil.com.br/calculadora-de-1rm",
+"offers":{"@type":"Offer","price":"0","priceCurrency":"BRL"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"O que é 1RM (Uma Repetição Máxima)?","acceptedAnswer":{"@type":"Answer","text":"1RM é a quantidade máxima de peso que um indivíduo consegue levantar em um determinado exercício com execução técnica completa durante uma única repetição."}},
+{"@type":"Question","name":"Por que usar fórmulas submáximas em vez de testar 1RM diretamente?","acceptedAnswer":{"@type":"Answer","text":"Testes diretos de 1RM impõem estresse articular extremo e aumentam significativamente o risco de lesões agudas. Fórmulas preditivas permitem estimar a carga máxima a partir de séries seguras de 3 a 10 repetições."}},
+{"@type":"Question","name":"Qual a melhor faixa percentual para hipertrofia?","acceptedAnswer":{"@type":"Answer","text":"A hipertrofia ocorre eficientemente em uma ampla gama de intensidades (entre 60% e 80% do 1RM, ou 6 a 15 repetições), desde que as séries sejam executadas próximas à falha muscular concêntrica."}}]}
+</script>
+</head>
+<body>
+<div id="site-header"></div>
+
+<div class="wrap page-head">
+  <div class="crumbs"><a href="/">Início</a> › Calculadora de 1RM</div>
+  <h1>Calculadora de 1RM (Carga Máxima)</h1>
+  <p>Estime seu recorde de 1 repetição máxima e descubra as cargas exatas para cada zona de repetições pela equação de Matt Brzycki.</p>
+</div>
+
+<div class="wrap" style="padding-bottom:8px">
+  <div id="calc-root" data-calc="rm"></div>
+</div>
+
+<div class="wrap section">
+<article class="prose">
+  <h2>Como funciona a estimativa submáxima de 1RM</h2>
+  <p>Existe uma relação matemática inversa e previsível entre o número de repetições realizadas até a fadiga e a porcentagem da carga máxima suportada. A equação de Brzycki é reconhecida na literatura de biomecânica pela precisão superior em faixas de 2 a 10 repetições.</p>
+  <div class="formula">Fórmula de Brzycki (para ≤ 10 reps):
+1RM = Carga Levantada (kg) ÷ [1.0278 − (0.0278 × Repetições)]
+
+Fórmula de Epley (para > 10 reps):
+1RM = Carga Levantada × [1 + (Repetições ÷ 30)]</div>
+
+  <h2>Zonas de Intensidade e Adaptações Neuromusculares</h2>
+  <ul>
+    <li><b>Força Máxima e Recrutamento Neural (85% a 100% 1RM):</b> 1 a 5 repetições com descansos longos (2 a 5 minutos).</li>
+    <li><b>Hipertrofia Miofibrilar e Mista (70% a 85% 1RM):</b> 6 a 12 repetições com descansos de 60 a 120 segundos.</li>
+    <li><b>Resistência Muscular Localizada (55% a 70% 1RM):</b> 12 a 20+ repetições.</li>
+  </ul>
+
+  <h2>Como aplicar no planejamento de sobrecarga progressiva</h2>
+  <p>Para progredir cargas sem estagnação, registre suas repetições com determinada carga semana a semana. Quando conseguir atingir o topo da sua faixa de repetições planejada (ex.: 3 séries de 10 reps com 80kg), suba o peso em 2% a 5% no próximo treino e recomece na base da faixa (ex.: 3 séries de 6 a 7 reps).</p>
+
+  <h2>Referências Científicas</h2>
+  <div class="ref" id="ref-brzycki"></div>
+  <div class="ref" id="ref-epley"></div>
+</article>
+</div>
+
+<div id="site-footer"></div>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/science.js"></script>
+<script src="../assets/js/calculators.js"></script>
+<script src="../assets/js/gamification.js"></script>
+<script src="../assets/js/app.js"></script>
+<script>
+window.FitPageInit = function () {
+  document.getElementById('ref-brzycki').innerHTML = FitScience.refs.brzycki;
+  document.getElementById('ref-epley').innerHTML = FitScience.refs.epley;
+};
+</script>
+</body>
+</html>

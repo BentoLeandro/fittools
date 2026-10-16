@@ -1,0 +1,26 @@
+# Dependências
+node_modules/
+
+# Variáveis de ambiente (nunca versionar segredos)
+.env
+.env.*
+!.env.example
+
+# Builds
+dist/
+.output/
+.nuxt/
+.nitro/
+.cache/
+
+# Logs e cobertura de testes
+*.log
+npm-debug.log*
+coverage/
+
+# TypeScript
+*.tsbuildinfo
+
+# Sistema operacional e editores
+.DS_Store
+Thumbs.db

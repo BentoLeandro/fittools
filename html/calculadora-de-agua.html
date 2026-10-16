@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Calculadora de Hidratação Diária — Água por Peso e Treino | FitTools</title>
+<meta name="description" content="Calcule quantos litros de água beber por dia conforme seu peso corporal e tempo diário de atividade física. Baseado no posicionamento do ACSM.">
+<link rel="canonical" href="https://fittoolsbrasil.com.br/calculadora-de-agua">
+<meta property="og:title" content="Calculadora de Hidratação Diária — FitTools">
+<meta property="og:description" content="Descubra sua meta exata de água considerando sua massa corporal e o volume de suor perdido nos treinos.">
+<meta name="theme-color" content="#0B0F19">
+<link rel="stylesheet" href="../assets/css/styles.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Calculadora de Água FitTools",
+"applicationCategory":"HealthApplication","operatingSystem":"Web","inLanguage":"pt-BR",
+"url":"https://fittoolsbrasil.com.br/calculadora-de-agua",
+"offers":{"@type":"Offer","price":"0","priceCurrency":"BRL"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"A regra de '2 litros de água por dia' é válida?","acceptedAnswer":{"@type":"Answer","text":"Não de forma universal. Uma pessoa de 50 kg sedentária tem necessidades hídricas completamente distintas de um indivíduo de 95 kg que treina em clima quente. O cálculo deve ser proporcional ao peso e ao suor."}},
+{"@type":"Question","name":"Como a desidratação afeta o treino de musculação?","acceptedAnswer":{"@type":"Answer","text":"Perdas de apenas 2% do peso corporal em água já reduzem a força máxima em até 10% a 15%, diminuem a resistência à fadiga e prejudicam o transporte intracelular de nutrientes."}},
+{"@type":"Question","name":"Bebidas como café e chá contam na hidratação diária?","acceptedAnswer":{"@type":"Answer","text":"Sim. Embora a cafeína possua leve efeito diurético em indivíduos não habituados, estudos comprovam que cafés e chás contribuem de forma líquida positiva para a hidratação total ao longo do dia."}}]}
+</script>
+</head>
+<body>
+<div id="site-header"></div>
+
+<div class="wrap page-head">
+  <div class="crumbs"><a href="/">Início</a> › Calculadora de hidratação</div>
+  <h1>Calculadora de Hidratação Diária</h1>
+  <p>Descubra seu consumo hídrico ideal diário integrando a taxa metabólica basal de líquidos e a reposição do volume de suor perdido no treino.</p>
+</div>
+
+<div class="wrap" style="padding-bottom:8px">
+  <div id="calc-root" data-calc="agua"></div>
+</div>
+
+<div class="wrap section">
+<article class="prose">
+  <h2>A Fisiologia da Hidratação no Esporte</h2>
+  <p>A água atua como solvente biológico fundamental, transportadora de eletrólitos e principal reguladora térmica do organismo. O tecido muscular esquelético é composto por aproximadamente 75% de água. A desidratação subclínica diminui a volemia sanguínea, eleva a frequência cardíaca para a mesma carga de esforço e reduz a síntese proteica muscular.</p>
+
+  <h2>Fórmula de Cálculo Adotada</h2>
+  <div class="formula">Consumo Base = 35 ml × Peso Corporal (kg)
+Adicional de Exercício = ~700 ml por hora de atividade moderada a intensa
+
+Meta Total = Base + Adicional de Exercício</div>
+
+  <h2>Indicadores Práticos de Hidratação</h2>
+  <p>A coloração da urina ao longo do dia é a ferramenta visual mais confiável:</p>
+  <ul>
+    <li><b>Amarelo muito claro / palha:</b> Nível ótimo de hidratação.</li>
+    <li><b>Amarelo escuro:</b> Desidratação leve. Beba 500 ml de água imediatamente.</li>
+    <li><b>Âmbar / castanho:</b> Desidratação significativa. Reponha líquidos e eletrólitos.</li>
+  </ul>
+
+  <h2>Referência Científica</h2>
+  <div class="ref" id="ref-acsm"></div>
+</article>
+</div>
+
+<div id="site-footer"></div>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/science.js"></script>
+<script src="../assets/js/calculators.js"></script>
+<script src="../assets/js/gamification.js"></script>
+<script src="../assets/js/app.js"></script>
+<script>
+window.FitPageInit = function () {
+  document.getElementById('ref-acsm').innerHTML = FitScience.refs.acsm;
+};
+</script>
+</body>
+</html>

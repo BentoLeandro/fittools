@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Calculadora de Frequência Cardíaca e Zonas de Treino | FitTools</title>
+<meta name="description" content="Calcule sua FC máxima pela fórmula de Tanaka e descubra suas zonas de treinamento cardiovascular (Z1 a Z5) pelo método de frequência cardíaca de reserva de Karvonen.">
+<link rel="canonical" href="https://fittoolsbrasil.com.br/calculadora-de-frequencia-cardiaca">
+<meta property="og:title" content="Calculadora de Frequência Cardíaca e Zonas de Treino — FitTools">
+<meta property="og:description" content="Prescreva seu cardio no ritmo exato: Zonas 1 a 5 calculadas com a equação de reserva de Karvonen.">
+<meta name="theme-color" content="#0B0F19">
+<link rel="stylesheet" href="../assets/css/styles.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Calculadora de Zonas Cardíacas FitTools",
+"applicationCategory":"HealthApplication","operatingSystem":"Web","inLanguage":"pt-BR",
+"url":"https://fittoolsbrasil.com.br/calculadora-de-frequencia-cardiaca",
+"offers":{"@type":"Offer","price":"0","priceCurrency":"BRL"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"Por que a fórmula '220 - idade' está ultrapassada?","acceptedAnswer":{"@type":"Answer","text":"A fórmula clássica de Fox & Haskell (220 - idade) superestima a FC máxima em jovens e subestima em pessoas mais velhas. A equação de Tanaka (208 - 0.7 × idade), validada em mais de 18.000 indivíduos, é significativamente mais acurada."}},
+{"@type":"Question","name":"O que é a Zona 2 e por que ela é tão importante?","acceptedAnswer":{"@type":"Answer","text":"A Zona 2 (60% a 70% da FC de Reserva) estimula a densidade mitocondrial, melhora a capacidade de oxidação de gorduras e constrói a base aeróbica fundamental sem sobrecarregar o sistema nervoso central."}},
+{"@type":"Question","name":"Como medir a frequência cardíaca de repouso?","acceptedAnswer":{"@type":"Answer","text":"Meça seus batimentos durante 60 segundos deitado, imediatamente após acordar, antes de levantar da cama ou tomar café da manhã."}}]}
+</script>
+</head>
+<body>
+<div id="site-header"></div>
+
+<div class="wrap page-head">
+  <div class="crumbs"><a href="/">Início</a> › Calculadora de frequência cardíaca</div>
+  <h1>Zonas de Frequência Cardíaca</h1>
+  <p>Calcule sua FC Máxima e suas zonas de treino cardiovascular (Z1 a Z5) combinando a equação de Tanaka e o método da FC de Reserva de Karvonen.</p>
+</div>
+
+<div class="wrap" style="padding-bottom:8px">
+  <div id="calc-root" data-calc="fc"></div>
+</div>
+
+<div class="wrap section">
+<article class="prose">
+  <h2>A Superioridade do Método de Karvonen</h2>
+  <p>Calcular zonas apenas aplicando porcentagens diretas sobre a FC máxima ignora a aptidão cardiovascular individual. O método da Frequência Cardíaca de Reserva (FCR) utiliza a sua FC de repouso como ponto de partida, ajustando os intervalos conforme seu condicionamento:</p>
+  <div class="formula">FC Máxima (Tanaka) = 208 − (0,7 × Idade)
+FC Reserva = FC Máxima − FC Repouso
+Alvo = (FC Reserva × % Intensidade) + FC Repouso</div>
+
+  <h2>Detalhamento das 5 Zonas de Treinamento</h2>
+  <ul>
+    <li><b>Zona 1 (50%–60% FCR) — Recuperação Ativa:</b> Estimula circulação sanguínea, eliminação de metabólitos e regeneração tecidual sem gerar estresse adicional.</li>
+    <li><b>Zona 2 (60%–70% FCR) — Base Aeróbica:</b> Otimização metabólica, queima de lipídios e expansão da rede capilar muscular. Sustentável por horas.</li>
+    <li><b>Zona 3 (70%–80% FCR) — Cardio / Ritmo Moderado:</b> Melhora a capacidade de trabalho cardiovascular e o transporte de oxigênio pelo sistema circulatório.</li>
+    <li><b>Zona 4 (80%–90% FCR) — Limiar Anaeróbico:</b> Eleva o limiar de lactato. O corpo aprende a tamponar a acidez muscular em ritmos competitivos.</li>
+    <li><b>Zona 5 (90%–100% FCR) — Esforço Máximo / VO2 Máximo:</b> Estímulo neuromuscular e respiratório máximo, realizado em formato de tiros curtos e intervalados (HIIT).</li>
+  </ul>
+
+  <h2>Referências Científicas</h2>
+  <div class="ref" id="ref-tanaka"></div>
+  <div class="ref" id="ref-karvonen"></div>
+</article>
+</div>
+
+<div id="site-footer"></div>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/science.js"></script>
+<script src="../assets/js/calculators.js"></script>
+<script src="../assets/js/gamification.js"></script>
+<script src="../assets/js/app.js"></script>
+<script>
+window.FitPageInit = function () {
+  document.getElementById('ref-tanaka').innerHTML = FitScience.refs.tanaka;
+  document.getElementById('ref-karvonen').innerHTML = FitScience.refs.karvonen;
+};
+</script>
+</body>
+</html>
