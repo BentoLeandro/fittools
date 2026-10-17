@@ -109,7 +109,7 @@ Plano de implementação do **FitTools Brasil MVP v1.0**, uma plataforma web fit
     - _Requirements: 2.1, 8.1, 8.7, 10.6_
 
 - [x] 2. Fase 2: Backend - Infraestrutura
-  - Status da fase: concluída. Tasks 2.1, 2.1b, 2.2, 2.3, 2.4, 2.5 e 2.6 estão implementadas (o PostgreSQL local em Docker está no ar, a primeira migration foi aplicada, o repositório Git existe na raiz do monorepo e o `prisma` está em `dependencies`). Ressalvas: o primeiro commit Git ainda não foi feito, e o `trustProxy` (ativo só em produção) foi validado apenas por compilação; o teste em execução atrás do Caddy fica para a Task 11.6.
+  - Status da fase: concluída. Tasks 2.1, 2.1b, 2.2, 2.3, 2.4, 2.5 e 2.6 estão implementadas (o PostgreSQL local em Docker está no ar, a primeira migration foi aplicada, o repositório Git existe na raiz do monorepo e o `prisma` está em `dependencies`). O primeiro commit Git foi feito e enviado ao GitHub (`7ab6bab` na `main`, com `HEAD` e `origin/main` no mesmo commit). Ressalva: o `trustProxy` (ativo só em produção) foi validado apenas por compilação; o teste em execução atrás do Caddy fica para a Task 11.6.
 
   - [x] 2.1 Configurar Prisma ORM
     - Descrição: instalar e configurar o Prisma como ORM para PostgreSQL com o schema inicial.
@@ -178,7 +178,7 @@ Plano de implementação do **FitTools Brasil MVP v1.0**, uma plataforma web fit
       - Migration aplicada com `npx prisma migrate dev`; `npx prisma migrate status` indica "Database schema is up to date"
       - Teste manual dos CHECKs: `INSERT` fora da faixa (ex: `age = 5`) é rejeitado pelo banco
       - Com o banco conectado, `GET /health` responde 200 com `database: "connected"`; com o container parado (`docker compose -f docker-compose.dev.yml stop db`), responde 503 com `database: "disconnected"` em até ~5s
-      - Pasta `fittools-backend/prisma/migrations/` (incluindo `migration_lock.toml`) versionada no Git e fora do `.gitignore` — o repositório Git existe (criado na raiz do monorepo) e as migrations não estão ignoradas (verificado com `git check-ignore`); o commit em si ainda NÃO foi feito (registrado também na Task 2.6, item 9)
+      - Pasta `fittools-backend/prisma/migrations/` (incluindo `migration_lock.toml`) versionada no Git e fora do `.gitignore` — o repositório Git existe (criado na raiz do monorepo) e as migrations não estão ignoradas (verificado com `git check-ignore`); o commit foi feito e enviado ao GitHub (`7ab6bab` na `main`), incluindo as migrations (registrado também na Task 2.6, item 9)
     - Trecho SQL a acrescentar ao final do `migration.sql`:
 
           ALTER TABLE "user_health_profiles"
@@ -195,7 +195,7 @@ Plano de implementação do **FitTools Brasil MVP v1.0**, uma plataforma web fit
       - Em produção (Fase 11) só `prisma migrate deploy` é usado e exige `prisma/migrations/` versionada.
       - Manter a migration retrocompatível com a versão anterior do código sempre que possível, pois em produção ela roda antes da troca da API.
       - As colunas são nullable; o CHECK trata `NULL` explicitamente com `IS NULL OR`.
-    - Status: concluída. O repositório Git existe e as migrations não são ignoradas, mas o commit em si ainda não foi feito (decisão do usuário). Verificado de fato: migration `20261016121524_init` criada com `--create-only`, editada para incluir os CHECKs `chk_weight_kg`, `chk_height_cm` e `chk_age` (aceitando NULL) e aplicada; `prisma migrate status` indica "Database schema is up to date"; teste manual no PostgreSQL: `age = 5`, `weight_kg = 500` e `height_cm = 50` foram rejeitados e um perfil válido (80 kg, 178 cm, 28 anos) foi aceito; `GET /health` respondeu 200 com `database: "connected"` com o banco no ar e 503 com `database: "disconnected"` com o container parado (cerca de 6 s medidos no cliente, com timeout interno de 5 s).
+    - Status: concluída. O repositório Git existe, as migrations não são ignoradas e já estão versionadas no commit `7ab6bab` da `main`, enviado ao GitHub. Verificado de fato: migration `20261016121524_init` criada com `--create-only`, editada para incluir os CHECKs `chk_weight_kg`, `chk_height_cm` e `chk_age` (aceitando NULL) e aplicada; `prisma migrate status` indica "Database schema is up to date"; teste manual no PostgreSQL: `age = 5`, `weight_kg = 500` e `height_cm = 50` foram rejeitados e um perfil válido (80 kg, 178 cm, 28 anos) foi aceito; `GET /health` respondeu 200 com `database: "connected"` com o banco no ar e 503 com `database: "disconnected"` com o container parado (cerca de 6 s medidos no cliente, com timeout interno de 5 s).
     - _Requirements: 7.1, 7.2, 7.5, 7.9, 10.7_
 
   - [x] 2.3 Configurar variáveis de ambiente
@@ -268,7 +268,7 @@ Plano de implementação do **FitTools Brasil MVP v1.0**, uma plataforma web fit
       - Em desenvolvimento a API fica exposta diretamente (sem proxy); por isso `trustProxy` foi condicionado a `env.NODE_ENV === 'production'`, evitando que o IP usado no rate limiting seja forjado via `X-Forwarded-For`.
       - A CLI do Prisma em `dependencies` aumenta ligeiramente a imagem Docker, mas permite `docker compose run --rm migrate` (Tasks 11.1 e 11.2).
       - `prisma/migrations` versionada é pré-requisito do `prisma migrate deploy` no deploy (Task 11.5).
-    - Status: concluída (itens 1-9). Verificado de fato: (7) `trustProxy: env.NODE_ENV === 'production'` adicionado em `fittools-backend/src/app.ts` (só em produção, pois em desenvolvimento a API fica exposta diretamente e confiar no `X-Forwarded-For` permitiria forjar o IP do rate limiting); o backend compila (`npm run build`). Ressalva: o comportamento em produção atrás do Caddy NÃO foi testado em execução, apenas por compilação; a validação em execução (dois IPs distintos com contadores independentes) fica para a Task 11.6. (8) pacote `prisma` movido de `devDependencies` para `dependencies` em `fittools-backend/package.json`, versão exata 5.22.0; Prisma Client regenerado e build ok. (9) repositório Git criado na raiz do monorepo (`git init -b main`); verificado com `git check-ignore` que `.env`, `node_modules`, `dist`, `.nuxt` e `.output` são ignorados, e que `.env.example`, `prisma/migrations/<timestamp>_init/migration.sql` e `prisma/migrations/migration_lock.toml` NÃO são ignorados (serão versionados); nenhum arquivo sensível entre os 38 arquivos que seriam versionados. O primeiro commit ainda NÃO foi feito (decisão do usuário), portanto as migrations estão aptas a serem versionadas, mas ainda não estão commitadas.
+    - Status: concluída (itens 1-9). Verificado de fato: (7) `trustProxy: env.NODE_ENV === 'production'` adicionado em `fittools-backend/src/app.ts` (só em produção, pois em desenvolvimento a API fica exposta diretamente e confiar no `X-Forwarded-For` permitiria forjar o IP do rate limiting); o backend compila (`npm run build`). Ressalva: o comportamento em produção atrás do Caddy NÃO foi testado em execução, apenas por compilação; a validação em execução (dois IPs distintos com contadores independentes) fica para a Task 11.6. (8) pacote `prisma` movido de `devDependencies` para `dependencies` em `fittools-backend/package.json`, versão exata 5.22.0; Prisma Client regenerado e build ok. (9) repositório Git criado na raiz do monorepo (`git init -b main`); verificado com `git check-ignore` que `.env`, `node_modules`, `dist`, `.nuxt` e `.output` são ignorados, e que `.env.example`, `prisma/migrations/<timestamp>_init/migration.sql` e `prisma/migrations/migration_lock.toml` NÃO são ignorados (portanto são versionados); nenhum arquivo sensível entre os 38 arquivos versionados. O primeiro commit foi feito pelo usuário e enviado ao GitHub: `7ab6bab` na branch `main` ("Setup inicial: backend Fastify, frontend Nuxt 3 e PostgreSQL com Docker"), com 38 arquivos; `HEAD` e `origin/main` apontam para o mesmo commit (remote `origin`: https://github.com/BentoLeandro/fittools.git). Entre os arquivos versionados, os únicos com nomes de variáveis de ambiente são os dois `.env.example`; `.env`, `node_modules`, `dist`, `.nuxt` e `.output` não foram versionados. As migrations (`prisma/migrations/<timestamp>_init/migration.sql` e `migration_lock.toml`) estão no commit.
     - _Requirements: 3.3, 6.8, 10.5_
 
 - [ ] 3. Fase 3: Backend - Autenticação
@@ -440,7 +440,7 @@ Plano de implementação do **FitTools Brasil MVP v1.0**, uma plataforma web fit
 
 - [ ] 5. Fase 5: Frontend - Estrutura Base
 
-  - [ ] 5.1 Configurar Nuxt para SSG
+  - [x] 5.1 Configurar Nuxt para SSG
     - Descrição: configurar o Nuxt 3 para Static Site Generation com rotas pré-renderizadas.
     - Critérios de aceitação:
       - `nuxt.config.ts` com `ssr: true`
@@ -455,9 +455,10 @@ Plano de implementação do **FitTools Brasil MVP v1.0**, uma plataforma web fit
     - Estimativa: M (2-3h)
     - Comandos úteis: `npm install @nuxtjs/sitemap @nuxtjs/robots`; `npx nuxi module add sitemap robots`
     - Notas: listar as 8 calculadoras em `prerender.routes`; configurar `sitemap.hostname` com o domínio de produção; confirmar que `npm run generate` produz `404.html` em `.output/public` (o Caddy o serve com status 404, Task 11.2); `.output/public` é o diretório enviado por `rsync` à VPS (Task 11.5).
+    - Status: concluída. Verificado de fato com `npm run generate` (Nuxt 3.21.11): gerou `index.html` (com o conteúdo da home e `lang="pt-BR"`), `404.html`, `200.html`, `robots.txt` e `sitemap.xml` em `.output/public`. O `robots.txt` bloqueia `/login`, `/registro` e `/perfil` e aponta para `https://fittoolsbrasil.com.br/sitemap.xml`; o sitemap lista a home e fica sem as rotas privadas. Teste temporário com páginas descartáveis (removidas depois): `calculadora-de-imc` entrou sozinha no pré-render e no sitemap, `/login` foi gerado mas ficou fora do sitemap, e `NUXT_PUBLIC_SITE_URL` mudou o domínio no sitemap e no `robots.txt`. Solução para as rotas inexistentes: as 8 calculadoras ficam numa constante e só entram em `prerender.routes` as que já têm arquivo em `pages/`. Versões fixas: `@nuxtjs/sitemap` 8.6.2, `@nuxtjs/robots` 6.2.4, `zod` 3.23.8 e `@types/node` 20.19.43 (dev). As versões mais novas desses módulos (sitemap 9 e robots 7) exigem Nuxt 4, por isso ficamos nas majors anteriores. Ressalvas: o build mostra um aviso do Nitro sobre `cache-driver.js` que não impede nada; o domínio `fittoolsbrasil.com.br` ainda precisa ser confirmado como registrado.
     - _Requirements: 2.1, 2.7, 2.8, 2.9, 10.6_
 
-  - [ ] 5.2 Criar Pinia store (userStore)
+  - [x] 5.2 Criar Pinia store (userStore)
     - Descrição: criar o store Pinia para gerenciar autenticação e dados do usuário.
     - Critérios de aceitação:
       - Store `userStore` em `stores/user.ts`
@@ -471,6 +472,7 @@ Plano de implementação do **FitTools Brasil MVP v1.0**, uma plataforma web fit
     - Dependências: 1.3
     - Estimativa: M (3-4h)
     - Notas: usar `useLocalStorage()` do VueUse; computed `hasHealthProfile` e `userName`.
+    - Status: concluída. Verificado de fato: 13 testes unitários (Vitest 3.2.7 + happy-dom) passando em `tests/unit/user-store.test.ts`, cobrindo sessão (login/logout), persistência no `localStorage` com a chave `fittools_auth_token` e valor puro (sem aspas JSON), recarregamento da página, `fetchUserData` (sucesso, sem perfil, 401 encerra a sessão, falha de rede e erro 500 mantêm a sessão) e `updateHealthProfile` (sucesso, 400 sobe o erro, 401 encerra a sessão). `nuxt typecheck` passou, e foi provado que ele enxerga o store (dois erros de tipo plantados num arquivo temporário foram detectados e o arquivo removido); `npm run generate` continua gerando as 7 rotas. Arquivos: `stores/user.ts`, `types/api.ts`, `vitest.config.ts`, `tests/unit/user-store.test.ts`. Decisões: (1) o store usa `$fetch` direto (e não o `useApi` da 5.5) para não haver dependência circular; (2) `useLocalStorage` com `initOnMounted` evita erro de hidratação, já que o HTML do SSG é sempre de visitante, então componentes que mudam conforme o login (ex.: Header, Task 5.4) devem usar `<ClientOnly>` ou só reagir depois de montados; (3) `flush: sync` grava o token na hora, e `listenToStorageChanges: false` porque o VueUse pausava a gravação até o próximo tick depois de cada escrita, e um logout logo após o login deixava o token no storage (descoberto pelos testes); o JWT é sem estado, então não há ganho de segurança em espelhar o logout entre abas. Dependências novas (versões exatas): `@vueuse/core` 15.0.0, e em dev `vitest` 3.2.7 (a 5.x exige Node 22+), `happy-dom` 21.0.3, `typescript` 5.9.3 e `vue-tsc` 3.3.13; scripts `test:unit` e `typecheck`. Atenção para a Fase 4: o Prisma devolve `Decimal` como texto no JSON, e `HealthProfile` espera `weight_kg` e `height_cm` como número, então o endpoint deve converter com `Number()`.
     - _Requirements: 8.1, 8.2, 8.3, 8.8, 8.10_
 
   - [ ] 5.3 Criar layouts (default, calculator)
@@ -486,6 +488,7 @@ Plano de implementação do **FitTools Brasil MVP v1.0**, uma plataforma web fit
     - Dependências: 1.3
     - Estimativa: M (3-4h)
     - Notas: Header deve usar `useRouter` e `navigateTo`; Footer sticky bottom em páginas curtas.
+    - Status: Implementada; falta a revisão visual do usuário (não foi aberta num navegador). Entregue: `layouts/default.vue` (link 'Pular para o conteúdo', cabeçalho sticky com logo, menu 'Calculadoras' com as 8 páginas e login dentro de `<ClientOnly>` com 'Entrar' como fallback, ou avatar com a inicial e botão 'Sair' quando logado; rodapé com calculadoras, Política de Privacidade, Termos de Uso, e-mail de contato, redes sociais (lista vazia por enquanto, só aparece se houver itens) e copyright com o aviso de que a ferramenta não substitui orientação médica), `layouts/calculator.vue` (aninha o layout default via `<NuxtLayout name="default">` para o cabeçalho e o rodapé existirem uma vez só, e acrescenta o container e o aviso legal obrigatório do Requisito 11.3), `app.vue` agora com `<NuxtLayout>`, `assets/css/tailwind.css` (base, foco visível, botões `.btn`), `tailwind.config.ts` com a paleta do site antigo, e `utils/site.ts` como fonte única das 8 calculadoras, links legais, redes sociais e aviso legal. Verificado: `nuxt typecheck` passa; `npm run generate` gera 9 rotas sem erro de link quebrado; no HTML gerado da página de pré-visualização há exatamente 1 cabeçalho, 1 rodapé e 1 main, o aviso legal, os links /privacidade e /termos, 'Entrar' (visitante) e nenhum 'Sair'. NÃO verificado: aparência real, responsividade mobile, comportamento do menu e o estado logado. Pendências: a página provisória `pages/dev-preview-calculadora.vue` (privada, fora do sitemap e bloqueada no robots) deve ser removida, junto com a entrada em PRIVATE_ROUTES do nuxt.config.ts, quando a primeira calculadora existir; as páginas /privacidade e /termos ainda não existem (os links levam a 404 até serem criadas; o pré-render as ignora); na Task 5.4 o cabeçalho e o rodapé serão extraídos para componentes. O pré-render agora ignora (`nitro.prerender.ignore`) só as rotas conhecidas que ainda não têm arquivo em `pages/`, sem esconder erros reais.
     - _Requirements: 11.4, 14.3, 14.8_
 
   - [ ] 5.4 Criar componentes comuns (Header, Footer, Toast)
@@ -626,10 +629,12 @@ Plano de implementação do **FitTools Brasil MVP v1.0**, uma plataforma web fit
       - Interfaces TypeScript para todos os retornos
       - Comentários JSDoc com fórmulas e referências científicas
       - Precisão numérica idêntica ao `science.js` original
+      - As fórmulas são implementadas como funções puras de TypeScript, sem dependência de Vue, Nuxt, DOM ou estado reativo (sem `ref`, `useRuntimeConfig`, `window`); o `useScience()` apenas as expõe ao Vue. Os testes unitários rodam em ambiente Node (Vitest) sem montar componentes.
     - Arquivos afetados: `fittools-frontend/composables/useScience.ts` (criar), `types/calculators.ts` (criar - interfaces)
     - Dependências: 1.3
     - Estimativa: L (6-8h)
     - Notas: cada função com JSDoc e referência científica; usar `Math.pow()` e `Math.round()`; retornar objetos tipados, não primitivos soltos.
+    - Notas: isso mantém as fórmulas portáveis: permite movê-las para um pacote compartilhado ou para o backend no pós-MVP sem reescrever nem divergir resultados (ver item pós-MVP nas Notas).
     - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 1.10, 1.11, 8.7, 12.10, 14.1_
 
   - [ ] 7.2 Criar testes unitários das fórmulas
@@ -713,6 +718,7 @@ Plano de implementação do **FitTools Brasil MVP v1.0**, uma plataforma web fit
     - Arquivos afetados: `fittools-frontend/pages/calculadora-de-calorias.vue` (criar)
     - Dependências: 7.1, 7.4
     - Estimativa: M (3-4h)
+    - Notas: O site antigo NÃO tem página de calorias (a pasta `html/` tem só 1rm, agua, frequencia-cardiaca, gordura-corporal, imc, pace e proteina; existe apenas a lógica em `assets/js/calculators.js`). Esta página é NOVA: o texto editorial (explicação da fórmula Mifflin-St Jeor, tabela de fatores de atividade, FAQ, referências e JSON-LD) deve ser escrito do zero na Fase 7, não migrado.
     - _Requirements: 1.2, 2.2, 2.3, 11.1, 11.3_
 
   - [ ] 7.7 Criar página /calculadora-de-proteina
@@ -773,19 +779,20 @@ Plano de implementação do **FitTools Brasil MVP v1.0**, uma plataforma web fit
     - Estimativa: M (3-4h)
     - _Requirements: 1.6, 2.2, 2.3, 11.1, 11.3_
 
-  - [ ] 7.11 Criar página /calculadora-de-hidratacao
+  - [ ] 7.11 Criar página /calculadora-de-agua
     - Descrição: implementar a página da calculadora de hidratação (ingestão de água).
     - Critérios de aceitação:
-      - `pages/calculadora-de-hidratacao.vue` criada
+      - `pages/calculadora-de-agua.vue` criada
       - Formulário com peso e minutos de exercício
       - Cálculo com `waterIntake()`
       - Resultado exibe a ingestão total e o breakdown (base + exercício)
       - Dicas de hidratação (antes/durante/depois do treino)
       - Referências científicas (ACSM 2007)
       - Meta tags e structured data
-    - Arquivos afetados: `fittools-frontend/pages/calculadora-de-hidratacao.vue` (criar)
+    - Arquivos afetados: `fittools-frontend/pages/calculadora-de-agua.vue` (criar)
     - Dependências: 7.1, 7.4
     - Estimativa: M (3-4h)
+    - Notas: A URL é /calculadora-de-agua (igual à do site antigo). O nome "hidratação" é só o título da página.
     - _Requirements: 1.7, 2.2, 2.3, 11.1, 11.3_
 
   - [ ] 7.12 Criar página /calculadora-de-pace
@@ -1223,17 +1230,20 @@ Plano de implementação do **FitTools Brasil MVP v1.0**, uma plataforma web fit
 
 ### Decisões e versões fixas
 
-- Tarefas concluídas: 1.1, 1.2, 1.3, 2.1, 2.1b, 2.2, 2.3, 2.4, 2.5 e 2.6. As Fases 1 e 2 estão concluídas; restam 51 tarefas pendentes. Ressalvas da Fase 2: o repositório Git existe e as migrations não são ignoradas, mas o primeiro commit ainda não foi feito; o `trustProxy` (condicionado a `NODE_ENV === 'production'`) foi validado apenas por compilação, e o teste em execução atrás do Caddy fica para a Task 11.6.
+- Tarefas concluídas: 1.1, 1.2, 1.3, 2.1, 2.1b, 2.2, 2.3, 2.4, 2.5 e 2.6. As Fases 1 e 2 estão concluídas; restam 51 tarefas pendentes. Ressalvas da Fase 2: o primeiro commit foi feito e enviado ao GitHub (`7ab6bab` na `main`, com as migrations incluídas); o `trustProxy` (condicionado a `NODE_ENV === 'production'`) foi validado apenas por compilação, e o teste em execução atrás do Caddy fica para a Task 11.6.
 - Versões exatas (sem `^` ou `~`): Nuxt 3.21.11 (não usar Nuxt 4), Pinia 4.1.0, Vue 3.5.43, Prisma e `@prisma/client` 5.22.0.
 - Hospedagem decidida: VPS Hetzner única com Docker Compose (Caddy + API Fastify + PostgreSQL). Vercel, Render e Supabase não são usados.
 - O `prisma` (CLI) precisa estar em `dependencies` para que `prisma migrate deploy` rode dentro da imagem da API; a pasta `prisma/migrations/` deve estar versionada no Git.
 - `trustProxy` foi implementado como `env.NODE_ENV === 'production'` (Task 2.6): só é seguro em produção porque a porta 3001 não é publicada; sem ele o rate limiting por IP (Task 4.4) enxergaria apenas o IP interno do Caddy. Em desenvolvimento fica desativado, pois a API é exposta diretamente. Validado só por compilação; o teste em execução (dois IPs com contadores independentes) fica para a Task 11.6.
 - Os CHECK constraints de `user_health_profiles` não existem no `schema.prisma`; são adicionados à mão no SQL da migration inicial (Task 2.2) e tratam `NULL` explicitamente.
+- O site antigo não tem os arquivos `assets/js/app.js` e `assets/js/gamification.js` (as páginas os referenciam, mas eles não existem). Portanto o cabeçalho, o rodapé e o motor que montava os formulários a partir de `calculators.js` não estão disponíveis para copiar; o layout e os formulários são desenhados do zero, seguindo a paleta de `assets/css/styles.css`.
+- A URL da calculadora de hidratação é `/calculadora-de-agua` (igual à do site antigo, conforme os Requisitos 2.10 e 14.2). A página `/calculadora-de-calorias` não existe no site antigo e é nova (Task 7.6).
 
 ### Opcionais e priorização
 
 - A Task 7.3 (property-based tests, marcada com `*`) é a única tarefa claramente opcional para o lançamento do MVP e pode ser adiada para v1.1. As demais tarefas de teste (7.2 e Fase 10) são obrigatórias, pois a Task 11.5 depende de 7.2 e 10.4.
 - Pós-MVP (v1.1): analytics e tracking de conversão, histórico de medições, gráficos de evolução, exportação de dados (PDF) e compartilhamento social de resultados.
+  - Pós-MVP: cálculo no servidor para o mobile (FORA DO ESCOPO DO MVP; sem tarefa associada ainda): no MVP o cálculo é feito no navegador (resposta instantânea, sem latência nem consumo de rate limit). Quando o app mobile existir, avaliar expor `POST /api/v1/calculators/<nome>` reaproveitando as mesmas funções puras (ver Task 7.1), mantendo o cálculo local na web. As fórmulas são equações científicas públicas, então mover o cálculo para o servidor não as torna secretas; o ganho é validação, histórico e regras proprietárias futuras. Se for implementado, o Requisito 1.10 deve ser revisto.
 
 ### Grafo de dependências
 

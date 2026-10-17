@@ -1,10 +1,16 @@
-# Documento de Requisitos - MVP v1.0
+# Requirements Document
 
-## Introdução
+*Documento de Requisitos - MVP v1.0*
+
+## Introduction
+
+*Introdução*
 
 O MVP FitTools Brasil é uma plataforma web fitness B2C direcionada a praticantes de fitness brasileiros. Este MVP foca em migrar 8 calculadoras existentes em vanilla JavaScript para uma stack moderna Nuxt 3 + Node.js + PostgreSQL com autenticação básica de usuários e gerenciamento de perfis. A plataforma fornece calculadoras fitness otimizadas para SEO e cientificamente precisas, acessíveis a visitantes públicos, com contas de usuário opcionais para salvar perfis de saúde e receber recomendações personalizadas.
 
-## Glossário
+## Glossary
+
+*Glossário*
 
 - **Platform**: O sistema completo do FitTools Brasil MVP (frontend + backend + database)
 - **Calculator_Engine**: Os composables Vue 3 que fornecem fórmulas científicas de fitness
@@ -22,7 +28,9 @@ O MVP FitTools Brasil é uma plataforma web fitness B2C direcionada a praticante
 - **WHO**: Organização Mundial da Saúde
 - **ISSN**: Sociedade Internacional de Nutrição Esportiva
 
-## Requisitos
+## Requirements
+
+*Requisitos*
 
 ### Requisito 1: Migração e Computação das Calculadoras
 
@@ -126,7 +134,7 @@ O MVP FitTools Brasil é uma plataforma web fitness B2C direcionada a praticante
 4. O Backend_API DEVE implementar rate limiting especificamente para o endpoint de login (5 tentativas por 15 minutos por IP) para prevenir ataques de força bruta
 5. O Backend_API DEVE validar que todos os campos de timestamp estão dentro de faixas razoáveis (não datas futuras)
 6. O Backend_API DEVE registrar padrões de atividade suspeita (ex: 10+ tentativas de login falhadas do mesmo IP)
-7. O Backend_API DEVE rejeitar requisições de calculadoras com entradas fora de faixas fisiologicamente válidas sem processamento
+7. O Backend_API DEVE rejeitar, sem processamento, dados de perfil de saúde com valores fora das faixas fisiologicamente válidas (peso 30-300 kg, altura 120-230 cm, idade 14-100 anos). Caso, após o MVP, o cálculo das calculadoras passe a ser exposto também pelo servidor, a mesma regra de faixas se aplica a esses endpoints
 8. O Backend_API DEVE sanitizar todas as entradas de usuário para prevenir ataques de injeção SQL e XSS
 
 ### Requisito 7: Schema do Database e Integridade Referencial

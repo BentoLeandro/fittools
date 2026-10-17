@@ -24,3 +24,6 @@ coverage/
 # Sistema operacional e editores
 .DS_Store
 Thumbs.db
+
+# Cache local do Nitro (Nuxt)
+.data/

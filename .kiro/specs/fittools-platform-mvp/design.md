@@ -189,7 +189,7 @@ fittools-frontend/
 │   ├── calculadora-de-gordura-corporal.vue
 │   ├── calculadora-de-1rm.vue
 │   ├── calculadora-de-frequencia-cardiaca.vue
-│   ├── calculadora-de-hidratacao.vue
+│   ├── calculadora-de-agua.vue
 │   └── calculadora-de-pace.vue
 ├── components/
 │   ├── Calculator/
@@ -681,6 +681,16 @@ CREATE INDEX "user_health_profiles_user_id_idx" ON "user_health_profiles"("user_
 
 **Objetivo**: Migrar `assets/js/science.js` (vanilla JS) para `composables/useScience.ts` (TypeScript) mantendo precisão numérica idêntica e adicionando type safety.
 
+### Princípio: fórmulas como funções puras e portáveis
+
+No MVP os cálculos rodam no navegador (resposta instantânea, sem latência de rede e sem consumir rate limit). Para que a lógica possa ser centralizada em um só lugar quando o app mobile existir, as fórmulas seguem estas orientações:
+
+- As funções de cálculo (IMC, TMB/TDEE, proteína, gordura corporal, 1RM, FC, hidratação, pace) DEVEM ser funções puras de TypeScript, sem dependência de Vue, Nuxt, DOM ou estado reativo (sem `ref`, `useRuntimeConfig`, `window` etc.). Elas recebem números e devolvem números ou objetos.
+- O composable `useScience()` apenas expõe essas funções ao Vue; a lógica de cálculo fica separada dele.
+- **Motivo**: permite mover as mesmas funções para um pacote compartilhado ou para o backend no futuro, sem reescrever e sem divergir resultados, e facilita os testes com Vitest em ambiente Node.
+
+> **Observação (achado da migração)**: o site antigo tem 7 páginas em `html/` (1rm, agua, frequencia-cardiaca, gordura-corporal, imc, pace, proteina). Não existe `calculadora-de-calorias.html`; só existe a lógica de calorias em `assets/js/calculators.js`. Portanto a página `/calculadora-de-calorias` é NOVA: o texto editorial (explicação da fórmula Mifflin-St Jeor, tabela de fatores de atividade, FAQ, referências e JSON-LD) deve ser escrito do zero, não migrado. A URL da hidratação é `/calculadora-de-agua` (igual à do site antigo, para preservar o SEO).
+
 ### Exemplo de Migração — IMC
 
 **Antes (science.js)**:
@@ -1000,7 +1010,7 @@ export default defineNuxtConfig({
         '/calculadora-de-gordura-corporal',
         '/calculadora-de-1rm',
         '/calculadora-de-frequencia-cardiaca',
-        '/calculadora-de-hidratacao',
+        '/calculadora-de-agua',
         '/calculadora-de-pace'
       ]
     }
@@ -3160,6 +3170,14 @@ Todas as fórmulas implementadas nas calculadoras são baseadas em pesquisas cie
 ## Próximos Passos (Pós-MVP)
 
 Funcionalidades planejadas para versões futuras:
+
+### Cálculo no servidor para o app mobile
+
+- **Objetivo**: manter uma única fonte de verdade das fórmulas para web e mobile.
+- **Abordagem**: reaproveitar as mesmas funções puras (ver "Princípio: fórmulas como funções puras e portáveis") em endpoints como `POST /api/v1/calculators/<nome>`. O cálculo local no navegador continua existindo, para resposta instantânea e funcionamento sem rede. O endpoint serve principalmente ao mobile, ao histórico de cálculos e a regras que precisem ser validadas pelo servidor (por exemplo, gamificação).
+- **Ressalva**: as fórmulas implementadas são equações científicas públicas, então mover o cálculo para o servidor NÃO as torna secretas. O que justifica lógica no servidor é a validação, o histórico e regras proprietárias futuras (gerador de treino, recomendações personalizadas, regras de XP).
+- **Trade-offs**: se o site passasse a depender do servidor para calcular, haveria latência de rede, perda do uso offline e consumo de rate limit.
+- **Impacto nos requisitos**: se este item for implementado, o Requisito 1.10 (cálculos client-side sem chamadas à Backend_API) precisará ser revisto.
 
 ### v1.1 — Gamificação Básica
 - Sistema de pontos e badges

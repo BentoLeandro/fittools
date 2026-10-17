@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-site-bg font-sans text-ink antialiased;
+    line-height: 1.65;
+  }
+
+  /* Foco visivel para quem navega pelo teclado */
+  :focus-visible {
+    @apply outline outline-2 outline-offset-2 outline-brand;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center rounded-[14px] px-5 py-2.5 text-sm font-extrabold transition-colors;
+  }
+
+  .btn-primary {
+    @apply bg-brand text-on-brand hover:bg-brand-dark;
+  }
+
+  .btn-ghost {
+    @apply border border-line-2 text-ink hover:border-brand hover:text-brand;
+  }
+}
