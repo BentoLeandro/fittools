@@ -207,7 +207,7 @@ fittools-frontend/
 ├── composables/
 │   ├── useScience.ts          # Fórmulas científicas (migrado de science.js)
 │   ├── useAuth.ts             # Auth helpers (login, logout, register)
-│   ├── useApi.ts              # Axios wrapper com auth header
+│   ├── useApi.ts              # Cliente HTTP sobre $fetch (ofetch) com auth header (lógica em utils/api-client.ts)
 │   └── useValidation.ts       # Input validation rules
 ├── stores/
 │   └── user.ts                # Pinia store (auth token, user data, profile)

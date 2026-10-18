@@ -45,6 +45,19 @@ export interface HealthProfileInput {
   fitness_goal?: FitnessGoal
 }
 
+/** Corpo de POST /api/v1/auth/login. */
+export interface LoginPayload {
+  email: string
+  password: string
+}
+
+/** Corpo de POST /api/v1/auth/register. */
+export interface RegisterPayload {
+  email: string
+  password: string
+  name: string
+}
+
 /** Resposta de POST /api/v1/auth/register e POST /api/v1/auth/login. */
 export interface AuthResponse {
   user: User

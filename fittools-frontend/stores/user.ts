@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { defineStore, skipHydrate } from 'pinia'
 import { computed, ref } from 'vue'
 import { useLocalStorage } from '@vueuse/core'
 import type {
@@ -22,7 +22,10 @@ export const useUserStore = defineStore('user', () => {
   // O token so e lido do localStorage depois da montagem (initOnMounted). Assim o HTML
   // gerado no build (sempre "visitante") e a primeira renderizacao no navegador batem,
   // sem erro de hidratacao. Definir como null remove a chave do localStorage.
-  const token = useLocalStorage<string | null>(AUTH_TOKEN_KEY, null, {
+  // skipHydrate: o payload do SSG traz 	oken: null (o HTML sai sempre como visitante). Sem isso o
+  // Pinia copia esse null para o ref na hidratacao e o useLocalStorage apaga o token salvo,
+  // deslogando o usuario a cada recarga de pagina.
+  const token = skipHydrate(useLocalStorage<string | null>(AUTH_TOKEN_KEY, null, {
     initOnMounted: true,
     // Grava no localStorage na hora (e nao no proximo tick): um login seguido de recarga
     // ou redirecionamento imediato nao pode perder o token.
@@ -32,7 +35,7 @@ export const useUserStore = defineStore('user', () => {
     // O JWT e sem estado: sair em uma aba nao invalida o token no servidor, entao nao ha
     // ganho de seguranca em espelhar o logout entre abas.
     listenToStorageChanges: false
-  })
+  }))
   const user = ref<User | null>(null)
   const healthProfile = ref<HealthProfile | null>(null)
 

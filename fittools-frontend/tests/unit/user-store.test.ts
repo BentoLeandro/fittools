@@ -52,6 +52,21 @@ describe('userStore: sessão', () => {
     expect(store.userName).toBe('')
   })
 
+  it('hidratação do SSG/SSR (payload com token null) não apaga o token salvo', () => {
+    // O HTML estático sai sempre como visitante, então o payload do Nuxt traz token: null.
+    // Sem skipHydrate o Pinia copia esse null para o ref e o useLocalStorage apaga o token:
+    // cada recarga de página deslogaria o usuário.
+    localStorage.setItem(AUTH_TOKEN_KEY, 'abc.def.ghi')
+    const pinia = createPinia()
+    pinia.state.value.user = { token: null, user: null, healthProfile: null }
+    setActivePinia(pinia)
+
+    const store = useUserStore()
+
+    expect(store.token).toBe('abc.def.ghi')
+    expect(store.isAuthenticated).toBe(true)
+    expect(localStorage.getItem(AUTH_TOKEN_KEY)).toBe('abc.def.ghi')
+  })
   it('login guarda a sessão e grava o token puro no localStorage', () => {
     const store = useUserStore()
     store.login('abc.def.ghi', fakeUser)
