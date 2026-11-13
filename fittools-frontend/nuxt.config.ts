@@ -7,9 +7,7 @@ import { CALCULATORS, LEGAL_LINKS } from './utils/site'
 const CALCULATOR_ROUTES = CALCULATORS.map((calculator) => calculator.path)
 
 // Paginas privadas ou de autenticacao: fora do sitemap e bloqueadas no robots.txt.
-// '/dev-preview-calculadora' e uma pagina TEMPORARIA de pre-visualizacao do layout; remover
-// junto com o arquivo pages/dev-preview-calculadora.vue quando a primeira calculadora existir.
-const PRIVATE_ROUTES = ['/login', '/registro', '/perfil', '/dev-preview-calculadora']
+const PRIVATE_ROUTES = ['/login', '/registro', '/perfil']
 
 // O menu e o rodape ja linkam para paginas que serao criadas nas proximas fases. Para o
 // pre-render nao tratar esses links como erro (e sem esconder erros reais), ele ignora so as

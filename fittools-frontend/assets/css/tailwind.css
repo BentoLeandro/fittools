@@ -7,6 +7,12 @@
     scroll-behavior: smooth;
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
   body {
     @apply bg-site-bg font-sans text-ink antialiased;
     line-height: 1.65;
@@ -29,5 +35,35 @@
 
   .btn-ghost {
     @apply border border-line-2 text-ink hover:border-brand hover:text-brand;
+  }
+
+  /* Texto editorial das páginas de calculadora (o Tailwind zera margens e marcadores de lista). */
+  .calc-prose {
+    @apply max-w-[760px];
+  }
+
+  .calc-prose h2 {
+    @apply mb-3 mt-9 text-[1.3rem] font-extrabold text-white;
+  }
+
+  .calc-prose p {
+    @apply mt-3 text-[0.96rem] text-[#c3cddd];
+  }
+
+  .calc-prose ul {
+    @apply my-2.5 ml-[22px] list-disc;
+  }
+
+  .calc-prose li {
+    @apply mb-1.5 text-[0.96rem] text-[#c3cddd];
+  }
+
+  .calc-prose b {
+    @apply text-white;
+  }
+
+  /* Caixa de fórmula */
+  .formula {
+    @apply my-3 overflow-x-auto rounded-[10px] border border-line-2 border-l-[3px] border-l-brand bg-site-bg px-4 py-3.5 font-mono text-[0.85rem] text-[#d7ffe9];
   }
 }

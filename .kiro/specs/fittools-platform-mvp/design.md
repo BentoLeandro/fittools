@@ -1801,12 +1801,12 @@ describe('useScience - TMB/TDEE', () => {
 
   it('deve calcular TMB para homens (Mifflin-St Jeor)', () => {
     const bmr = computeBMR('male', 80, 180, 30)
-    expect(round(bmr)).toBe(1850)
+    expect(round(bmr)).toBe(1780) // 800 + 1125 - 150 + 5
   })
 
   it('deve calcular TMB para mulheres', () => {
     const bmr = computeBMR('female', 60, 165, 25)
-    expect(round(bmr)).toBe(1347)
+    expect(round(bmr)).toBe(1345) // 1345,25 = 600 + 1031,25 - 125 - 161
   })
 
   it('deve calcular TDEE com fator de atividade', () => {

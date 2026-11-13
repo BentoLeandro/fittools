@@ -28,6 +28,15 @@ export default {
         danger: '#FF5A5F',
         accent: '#A78BFA'
       },
+      keyframes: {
+        'result-in': {
+          from: { opacity: '0', transform: 'translateY(8px)' },
+          to: { opacity: '1', transform: 'none' }
+        }
+      },
+      animation: {
+        'result-in': 'result-in 0.35s ease both'
+      },
       maxWidth: {
         site: '1120px'
       },

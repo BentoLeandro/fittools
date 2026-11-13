@@ -77,3 +77,6 @@ export const CALCULATORS: ReadonlyArray<CalculatorInfo> = [
     icon: '🏃'
   }
 ]
+
+/** Aviso exibido em todo card de resultado das calculadoras (Requisito 11.6). */
+export const RESULT_DISCLAIMER = 'Esta ferramenta não substitui orientação médica ou de nutricionista.'
