@@ -1,0 +1,63 @@
+# Publica um site de TESTE no GitHub Pages a cada push na main.
+# O build sai com noindex (FITTOOLS_TEST_BUILD) e usa o endereco do Pages como base.
+# Producao (Hetzner) e outro fluxo e NAO usa este arquivo.
+name: Deploy de teste (GitHub Pages)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: fittools-frontend
+    steps:
+      # Actions fixadas pelo SHA do commit (versao na frente), nao por tag movel.
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: fittools-frontend/package-lock.json
+
+      - run: npm ci
+
+      - run: npm run test:unit
+
+      - name: Gerar o site estatico
+        env:
+          FITTOOLS_TEST_BUILD: 'true'
+          REPO_NAME: ${{ github.event.repository.name }}
+          OWNER: ${{ github.repository_owner }}
+        run: |
+          OWNER_LC="$(echo "$OWNER" | tr '[:upper:]' '[:lower:]')"
+          export NUXT_APP_BASE_URL="/${REPO_NAME}/"
+          export NUXT_SITE_URL="https://${OWNER_LC}.github.io/${REPO_NAME}"
+          npm run generate
+
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: fittools-frontend/.output/public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

@@ -28,6 +28,15 @@ const knownFutureRoutes = [
 ]
 const routesWithoutPage = knownFutureRoutes.filter((route) => !pageExists(route))
 
+// Build de TESTE (ex.: GitHub Pages): com FITTOOLS_TEST_BUILD=true o site sai com noindex e
+// robots.txt bloqueando tudo, para o Google nao indexar uma copia fora do dominio oficial.
+// O build de producao nao define essa variavel e continua indexavel.
+const isTestBuild = process.env.FITTOOLS_TEST_BUILD === 'true'
+
+// Subpasta onde o site e servido (NUXT_APP_BASE_URL, ex.: /fittools/ no GitHub Pages).
+// Em producao fica '/'. Sempre comeca e termina com '/'.
+const appBaseUrl = `/${(process.env.NUXT_APP_BASE_URL ?? '/').replace(/^\/+|\/+$/g, '')}/`.replace('//', '/')
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2024-01-07',
@@ -48,13 +57,15 @@ export default defineNuxtConfig({
   site: {
     url: 'https://fittoolsbrasil.com.br',
     name: 'FitTools Brasil',
-    defaultLocale: 'pt-BR'
+    defaultLocale: 'pt-BR',
+    indexable: !isTestBuild
   },
 
   nitro: {
     prerender: {
       crawlLinks: true,
-      ignore: routesWithoutPage,
+      // Com baseURL (GitHub Pages) o crawler enxerga os links ja prefixados, entao ignora as duas formas.
+      ignore: [...routesWithoutPage, ...routesWithoutPage.map((route) => `${appBaseUrl.slice(0, -1)}${route}`)],
       routes: ['/', ...existingCalculatorRoutes]
     }
   },
@@ -68,16 +79,20 @@ export default defineNuxtConfig({
   },
 
   robots: {
+    // Em subpasta (GitHub Pages) o robots.txt nao teria efeito (so vale na raiz do dominio) e o
+    // modulo recusa gera-lo; o bloqueio fica por conta da meta noindex de cada pagina.
+    robotsTxt: appBaseUrl === '/',
     disallow: PRIVATE_ROUTES,
     credits: false
   },
 
   app: {
+    baseURL: appBaseUrl,
     head: {
       htmlAttrs: { lang: 'pt-BR' },
       charset: 'utf-8',
       viewport: 'width=device-width, initial-scale=1',
-      link: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }]
+      link: [{ rel: 'icon', type: 'image/svg+xml', href: `${appBaseUrl}favicon.svg` }]
     }
   },
 
