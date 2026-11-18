@@ -1,3 +1,4 @@
+import type {} from '@fastify/rate-limit' // traz o tipo de app.rateLimit()
 import { Prisma } from '@prisma/client'
 import type { FastifyError, FastifyInstance } from 'fastify'
 import { env } from '../config/env'
@@ -35,7 +36,10 @@ function clientErrorBody(error: FastifyError, statusCode: number): ErrorBody {
  * (Requisitos 3.8, 9.1, 9.3, 9.4 e 9.9): nunca devolve stack, SQL ou texto de biblioteca ao cliente.
  */
 export function registerErrorHandlers(app: FastifyInstance) {
-  app.setNotFoundHandler((_request, reply) => {
+  // O limite global do plugin só vale para rotas que existem: o 404 precisa do próprio limitador
+  // (o mesmo contador público por IP), senão varreduras de URLs inexistentes passariam livres.
+  // Exige o plugin de rate limit já registrado.
+  app.setNotFoundHandler({ preHandler: app.rateLimit() }, (_request, reply) => {
     return reply.status(404).send({ error: 'NotFound', message: 'Recurso não encontrado' })
   })
 

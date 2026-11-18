@@ -3,6 +3,8 @@ export interface ErrorBody {
   error: string
   message: string
   fields?: Record<string, string>
+  /** Só no 429: segundos até poder tentar de novo. */
+  retryAfter?: number
 }
 
 /** Erro esperado, que vira uma resposta HTTP com status e corpo conhecidos. */
@@ -44,5 +46,26 @@ export class ConflictError extends AppError {
 export class UnauthorizedError extends AppError {
   constructor(message: string) {
     super(401, 'UnauthorizedError', message)
+  }
+}
+
+/** 404: o recurso pedido não existe (ex.: token válido de um usuário que foi apagado). */
+export class NotFoundError extends AppError {
+  constructor(message = 'Recurso não encontrado') {
+    super(404, 'NotFound', message)
+  }
+}
+
+/** 429: limite de requisições excedido. `retryAfter` em segundos (o mesmo valor do cabeçalho Retry-After). */
+export class TooManyRequestsError extends AppError {
+  constructor(
+    message: string,
+    readonly retryAfter: number
+  ) {
+    super(429, 'TooManyRequestsError', message)
+  }
+
+  override toBody(): ErrorBody {
+    return { ...super.toBody(), retryAfter: this.retryAfter }
   }
 }

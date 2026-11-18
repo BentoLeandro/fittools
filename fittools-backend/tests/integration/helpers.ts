@@ -4,8 +4,11 @@ import { prisma } from '../../src/database/client'
 import { authService } from '../../src/services/auth.service'
 import { assertIsTestDatabase } from './test-database'
 
-export async function createTestApp(options?: BuildAppOptions) {
-  const app = await buildApp(options)
+/** configure registra rotas extras só para o teste (antes de o app ficar pronto). */
+export async function createTestApp(options?: BuildAppOptions & { configure?: (app: Awaited<ReturnType<typeof buildApp>>) => void }) {
+  const { configure, ...appOptions } = options ?? {}
+  const app = await buildApp(appOptions)
+  configure?.(app)
   await app.ready()
   return app
 }

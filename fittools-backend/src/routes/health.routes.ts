@@ -1,5 +1,6 @@
 import type { FastifyInstance } from 'fastify'
 import { prisma } from '../database/client'
+import { healthRateLimit } from '../middlewares/rateLimit'
 
 const DB_TIMEOUT_MS = 5000
 
@@ -21,7 +22,7 @@ async function isDatabaseUp(): Promise<boolean> {
 }
 
 export async function healthRoutes(app: FastifyInstance) {
-  app.get('/health', async (_request, reply) => {
+  app.get('/health', { config: { rateLimit: healthRateLimit } }, async (_request, reply) => {
     const dbUp = await isDatabaseUp()
     return reply.status(dbUp ? 200 : 503).send({
       status: dbUp ? 'ok' : 'error',

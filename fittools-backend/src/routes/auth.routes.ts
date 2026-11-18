@@ -1,6 +1,7 @@
 import { Prisma } from '@prisma/client'
 import type { FastifyInstance } from 'fastify'
 import { prisma } from '../database/client'
+import { loginRateLimit, registerRateLimit } from '../middlewares/rateLimit'
 import { loginSchema, registerSchema } from '../schemas/auth.schema'
 import { DUMMY_PASSWORD_HASH, authService } from '../services/auth.service'
 import { ConflictError, UnauthorizedError } from '../utils/errors.util'
@@ -23,7 +24,7 @@ function isEmailTakenError(error: unknown): boolean {
 }
 
 export async function authRoutes(app: FastifyInstance) {
-  app.post('/register', async (request, reply) => {
+  app.post('/register', { config: { rateLimit: registerRateLimit } }, async (request, reply) => {
     const { email, password, name } = parseOrThrow(registerSchema, request.body)
 
     // Checagem barata antes do bcrypt (~300 ms de CPU): repetir um email já cadastrado não
@@ -56,7 +57,7 @@ export async function authRoutes(app: FastifyInstance) {
     return reply.status(201).send({ user, token })
   })
 
-  app.post('/login', async (request, reply) => {
+  app.post('/login', { config: { rateLimit: loginRateLimit } }, async (request, reply) => {
     const { email, password } = parseOrThrow(loginSchema, request.body)
 
     const user = await prisma.user.findUnique({

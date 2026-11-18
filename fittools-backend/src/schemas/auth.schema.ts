@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { MAX_PASSWORD_BYTES } from '../services/auth.service'
+import { bodyErrors } from './common.schema'
 
 // Limites das colunas de `users` (prisma/schema.prisma): email VARCHAR(255) e name VARCHAR(100).
 const EMAIL_MAX_LENGTH = 255
@@ -66,10 +67,6 @@ const loginPasswordSchema = z
   .min(1, 'Informe a senha')
   .transform((value) => value.normalize('NFC'))
 
-const bodyErrors = {
-  required_error: 'Corpo da requisição ausente',
-  invalid_type_error: 'Corpo da requisição deve ser um objeto JSON'
-}
 
 export const registerSchema = z.object(
   { email: emailSchema, password: newPasswordSchema, name: nameSchema },

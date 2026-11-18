@@ -8,3 +8,9 @@ export interface JWTPayload {
   iat: number
   exp: number
 }
+
+/** Usuário autenticado pelo middleware JWT (`request.user`). */
+export interface AuthenticatedUser {
+  id: string
+  email: string
+}

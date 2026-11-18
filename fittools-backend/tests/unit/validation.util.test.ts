@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { z } from 'zod'
 import { registerSchema } from '../../src/schemas/auth.schema'
-import { AppError, ConflictError, UnauthorizedError, ValidationError } from '../../src/utils/errors.util'
+import { AppError, ConflictError, NotFoundError, UnauthorizedError, ValidationError } from '../../src/utils/errors.util'
 import { parseOrThrow } from '../../src/utils/validation.util'
 
 function catchError(fn: () => unknown): unknown {
@@ -85,6 +85,13 @@ describe('AppError', () => {
     expect(error.statusCode).toBe(401)
     expect(error.toBody()).toEqual({ error: 'UnauthorizedError', message: 'Credenciais inválidas' })
     expect(error).toBeInstanceOf(AppError)
+  })
+
+  it('NotFoundError é 404 com a mensagem padrão do Requisito 9.3', () => {
+    const error = new NotFoundError()
+    expect(error.statusCode).toBe(404)
+    expect(error.toBody()).toEqual({ error: 'NotFound', message: 'Recurso não encontrado' })
+    expect(new NotFoundError('Outra').message).toBe('Outra')
   })
 
   it('o corpo não tem a chave fields quando ela não existe', () => {
